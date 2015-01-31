@@ -6,6 +6,7 @@ class Locked[T](_init: T) {
 
   def apply(): T = synchronized(it)
   def update(next: T) = synchronized(it = next)
+  def transform(f: T => T) = synchronized(it = f(it))
 }
 
 object Locked {
