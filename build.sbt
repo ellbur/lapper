@@ -5,7 +5,7 @@ name := "lapper"
 
 version := "1.0-SNAPSHOT"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.4"
 
 scalaSource in Compile <<= baseDirectory(_ / "src")
 
@@ -25,3 +25,4 @@ libraryDependencies ++= Seq(
 publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath + "/.m2/repository")))
 
 resolvers += "Local Maven Repository" at file(Path.userHome.absolutePath + "/.m2/repository").toURL.toString
+
