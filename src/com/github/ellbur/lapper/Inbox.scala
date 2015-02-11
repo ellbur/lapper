@@ -16,7 +16,7 @@ class Inbox extends Reactable with Receiver {
 
   override def reactWithin[T](duration: Duration)(f: PartialFunction[Option[Any], Continuation[T]]): Continuation[T] = {
     then {
-      f(Option(queue.poll(duration.toMillis, duration.unit)))
+      f(Option(queue.poll(duration.length, duration.unit)))
     }
   }
 }
