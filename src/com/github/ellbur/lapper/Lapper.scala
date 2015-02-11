@@ -23,17 +23,4 @@ object Lapper {
   }
 
   type Actor = Receiver
-
-  def restartOnError(f: Next): Next =
-    try {
-      trampoline(f)
-      done
-    }
-    catch {
-      case t: Throwable =>
-        System.err.println("Actor caught exception:")
-        t.printStackTrace()
-        System.err.println("Inside restartOnError -- Actor will now restart.")
-        restartOnError(f)
-    }
 }
