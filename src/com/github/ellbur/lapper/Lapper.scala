@@ -1,12 +1,8 @@
 
 package com.github.ellbur.lapper
+import Continuation.trampoline
 
 object Lapper {
-  private def trampoline[T](f: Continuation[T]): T = f match {
-    case Return(x) => x
-    case Bounce(f) => trampoline(f())
-  }
-
   type Next = Continuation[Unit]
 
   def then[T](x: => Continuation[T]) = Bounce(() => x)
