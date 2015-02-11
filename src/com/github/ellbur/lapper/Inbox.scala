@@ -19,4 +19,10 @@ class Inbox extends Reactable with Receiver {
       f(Option(queue.poll(duration.length, duration.unit)))
     }
   }
+
+  override def check[T](f: PartialFunction[Option[Any], Continuation[T]]): Continuation[T] = {
+    then {
+      f(Option(queue.peek()))
+    }
+  }
 }

@@ -8,6 +8,8 @@ trait Reactable {
   def react[T](f: PartialFunction[Any, Continuation[T]]): Continuation[T]
   def reactWithin[T](timeout: Duration)(f: PartialFunction[Option[Any], Continuation[T]]): Continuation[T]
 
+  def check[T](f: PartialFunction[Option[Any], Continuation[T]]): Continuation[T]
+
   def attempt[A](action: => Continuation[A]) = new {
     def handling[A1>:A](recovery: PartialFunction[Throwable,Continuation[A1]]): Continuation[A1] = then {
       try
