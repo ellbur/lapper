@@ -1,12 +1,12 @@
 
 package com.github.ellbur.lapper
 
-import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.{BlockingQueue, LinkedBlockingQueue}
 import Lapper._
 import scala.concurrent.duration.Duration
 
-class Inbox extends Reactable with Receiver {
-  private[this] val queue = new LinkedBlockingQueue[Any]
+trait Inbox extends Reactable with Receiver {
+  protected val queue: BlockingQueue[Any]
 
   override def !(msg: Any): Unit = {
     queue.put(msg)
@@ -24,5 +24,17 @@ class Inbox extends Reactable with Receiver {
     then {
       f(Option(queue.peek()))
     }
+  }
+
+  override def whileNoMessages(f: => Unit): Next = {
+    def step(): Next = {
+      if (!queue.isEmpty)
+        done
+      else {
+        f
+        step()
+      }
+    }
+    step()
   }
 }
