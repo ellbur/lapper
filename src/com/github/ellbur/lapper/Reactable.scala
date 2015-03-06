@@ -10,6 +10,8 @@ trait Reactable {
 
   def check[T](f: PartialFunction[Option[Any], Continuation[T]]): Continuation[T]
 
+  def whileNoMessages(f: => Unit): Next
+
   def attempt[A](action: => Continuation[A]) = new {
     def handling[A1>:A](recovery: PartialFunction[Throwable,Continuation[A1]]): Continuation[A1] = then {
       try
@@ -19,7 +21,8 @@ trait Reactable {
     }
   }
 
-  def restartOnError(f: Next): Next =
+  def restartOnError(_f: => Next): Next = {
+    val f = then { _f }
     try {
       trampoline(f)
       done
@@ -31,4 +34,16 @@ trait Reactable {
         System.err.println("Inside restartOnError -- Actor will now restart.")
         restartOnError(f)
     }
+  }
+
+  def loop(_f: => Next): Next = {
+    restartOnError {
+      val f = then { _f }
+      def step(): Next = {
+        trampoline(f)
+        step()
+      }
+      step()
+    }
+  }
 }
