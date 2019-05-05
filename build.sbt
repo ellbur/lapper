@@ -3,7 +3,7 @@ organization := "com.github.ellbur"
 
 name := "lapper"
 
-version := "1.2-SNAPSHOT"
+version := "1.3"
 
 scalaVersion := "2.11.4"
 
