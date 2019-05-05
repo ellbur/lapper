@@ -24,7 +24,3 @@ libraryDependencies ++= Seq(
 
 resolvers += "Local Maven Repository" at file(Path.userHome.absolutePath + "/.m2/repository").toURL.toString
 
-credentials += Credentials(Path.userHome / ".ivy2" / ".local-archive-internal-credentials.txt")
-
-publishMavenStyle := true
-
