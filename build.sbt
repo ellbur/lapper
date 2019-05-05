@@ -3,7 +3,7 @@ organization := "com.github.ellbur"
 
 name := "lapper"
 
-version := "1.0-SNAPSHOT"
+version := "1.2-SNAPSHOT"
 
 scalaVersion := "2.11.4"
 
@@ -22,7 +22,9 @@ resourceDirectory in Test <<= baseDirectory(_ / "test-resources")
 libraryDependencies ++= Seq(
 )
 
-publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath + "/.m2/repository")))
-
 resolvers += "Local Maven Repository" at file(Path.userHome.absolutePath + "/.m2/repository").toURL.toString
+
+credentials += Credentials(Path.userHome / ".ivy2" / ".local-archive-internal-credentials.txt")
+
+publishMavenStyle := true
 

@@ -1,5 +1,5 @@
 
-package com.github.ellbur.lapper
+package com.github.ellbur.lapper2
 
 import java.util.concurrent.BlockingQueue
 

@@ -1,5 +1,5 @@
 
-package com.github.ellbur.lapper
+package com.github.ellbur.lapper2
 
 class Locked[T](_init: T) {
   private var it = _init

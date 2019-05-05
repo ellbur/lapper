@@ -22,7 +22,7 @@ trait Inbox extends Reactable with Receiver {
 
   override def check[T](f: PartialFunction[Option[Any], Continuation[T]]): Continuation[T] = {
     then {
-      f(Option(queue.peek()))
+      f(Option(queue.poll()))
     }
   }
 

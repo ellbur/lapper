@@ -23,18 +23,38 @@ object Lapper {
     inbox: Receiver
   }
 
-  def throttledActor(size: Int)(ff: Reactable => Next): Actor = {
-    val inbox = new ThrottledInbox(size)
+  def actorWithOptions(priority: Int = Thread.NORM_PRIORITY)(ff: Reactable => Next): Actor = {
+    val inbox = new UnlimitedInbox
 
-    new Thread {
+    val thread = new Thread {
       override def run(): Unit = {
         val f = ff(inbox)
         trampoline(f)
       }
-    }.start()
+    }
+    thread.setPriority(priority)
+    thread.start()
 
     inbox: Receiver
   }
 
+  def throttledActor(size: Int, priority: Int = Thread.NORM_PRIORITY)(ff: Reactable => Next): Actor = {
+    val inbox = new ThrottledInbox(size)
+
+    val thread = new Thread {
+      override def run(): Unit = {
+        val f = ff(inbox)
+        trampoline(f)
+      }
+    }
+    thread.setPriority(priority)
+    thread.start()
+
+    inbox: Receiver
+  }
+
+  def replyingActor(ff: ReplyingReactable => Next): ReplyingActor = new ReplyingActor(ff)
+
   type Actor = Receiver
+  type ReplyingActor = com.github.ellbur.lapper.ReplyingActor
 }
